@@ -27,6 +27,22 @@ if model:
         # ✅ Generate future dates
         future_dates = model.make_future_dataframe(periods=days)
 
+        # ✅ Identify missing regressors
+        required_regressors = ['MA_7', 'MA_14', 'Volatility_7', 'RSI_14']  # List all regressors used in training
+
+        # ✅ Fill missing regressors with last known values
+        for reg in required_regressors:
+            if reg in future_dates.columns:
+                future_dates[reg] = future_dates[reg].fillna(method='ffill')  # Use last known value
+            else:
+                future_dates[reg] = 0  # Default value if no data
+
+        # ✅ Check if all regressors exist
+        missing = [r for r in required_regressors if r not in future_dates.columns]
+        if missing:
+            st.error(f"❌ Missing regressors: {missing}")
+            st.stop()
+
         # ✅ Predict future stock prices
         forecast = model.predict(future_dates)
 
