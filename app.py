@@ -7,7 +7,7 @@ import requests
 import io
 
 # ✅ Load the best saved Prophet model from GitHub
-MODEL_URL = "https://github.com/Ramiogue/stock-prices-analysis-/raw/refs/heads/main/best_prophet_model.pkl"
+MODEL_URL = "https://raw.githubusercontent.com/Ramiogue/stock-prices-analysis-/main/best_prophet_model.pkl"
 
 @st.cache_data
 def load_model():
