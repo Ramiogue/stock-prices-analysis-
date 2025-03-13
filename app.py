@@ -3,21 +3,11 @@ import joblib
 import pandas as pd
 import numpy as np
 from prophet import Prophet
-import requests
-import io
 
-# ✅ Load the best saved Prophet model from GitHub
-MODEL_URL = "https://github.com/Ramiogue/stock-prices-analysis-/blob/60eb4f841b07da0d1b2bb85871275a5d89e5e861/best_prophet_model.pkl"
-
+# ✅ Load the model directly from the app folder
 @st.cache_data
 def load_model():
-    response = requests.get(MODEL_URL)
-    if response.status_code == 200:
-        model_file = io.BytesIO(response.content)
-        return joblib.load(model_file)
-    else:
-        st.error("❌ Failed to load model. Check the GitHub link or try again later.")
-        return None
+    return joblib.load("best_prophet_model.pkl")  
 
 model = load_model()
 
@@ -51,4 +41,4 @@ if model:
     st.write("✅ Model trained using historical stock data & tuned for accuracy.")
 
 else:
-    st.error("⚠️ Model not loaded. Please check the GitHub model link.")
+    st.error("⚠️ Model not loaded. Please check the file path.")
